@@ -20,8 +20,8 @@ public class TesteCalcularBaseCalculo {
     public void calcularBaseComDeducoesMenoresQueRendimentosTributaveis() {
         irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 8000f);
         irpf.cadastrarContribuicaoPrevidenciaria(500f);
-        irpf.cadastrarPensaoAlimenticia("Filho", 1500f);
         irpf.cadastrarDependente("Filho", "Filho");
+        irpf.cadastrarPensaoAlimenticia("Filho", 1500f);
         float baseCalculo = irpf.calcularBaseCalculo();
         assertEquals(5810.41f, baseCalculo, 0.01f);
     }

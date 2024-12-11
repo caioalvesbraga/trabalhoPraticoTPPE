@@ -212,11 +212,11 @@ public class IRPF {
 	 * @param valor valor da pensao alimenticia
 	 */
 	public void cadastrarPensaoAlimenticia(String dependente, float valor) {
-		String parentesco = getParentesco(dependente); 
-		if (parentesco.toLowerCase().contains("filh") || 
-			parentesco.toLowerCase().contains("alimentand")) {
-			totalPensaoAlimenticia += valor;
-		}
+		String parentesco = getParentesco(dependente);
+		if (parentesco != null && (parentesco.toLowerCase().contains("filh") || 
+        	parentesco.toLowerCase().contains("alimentand"))) {
+        	totalPensaoAlimenticia += valor;
+    	}
 	}
 
 	/**

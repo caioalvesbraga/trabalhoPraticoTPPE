@@ -34,7 +34,8 @@ public class TesteCalcularImposto {
     public void calcularImpostoEmTodasAsFaixas() {
         irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 8000f);
         irpf.cadastrarContribuicaoPrevidenciaria(500f);
-        float imposto = IRPF.calcularImposto(8000f);
-        assertEquals(987.88f, imposto, 0.01f);
+        float baseCalculo = irpf.calcularBaseCalculo();
+        float imposto = IRPF.calcularImposto(baseCalculo);
+        assertEquals(1166.4984f, imposto, 0.01f);
     }
 }

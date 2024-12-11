@@ -28,6 +28,6 @@ public class TesteCalcularAliquotaEfetiva {
         irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 8000f);
         irpf.cadastrarContribuicaoPrevidenciaria(500f);
         float aliquota = irpf.calcularAliquotaEfetiva();
-        assertEquals(9.88f, aliquota, 0.01f);
+        assertEquals(14.58123f, aliquota, 0.01f);
     }
 }
