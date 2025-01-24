@@ -1,332 +1,150 @@
+// Arquivo: IRPF.java
 package app;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class IRPF {
 
-	public static final boolean TRIBUTAVEL = true;
-	public static final boolean NAOTRIBUTAVEL = false;
-	private String[] nomeRendimento;
-	private boolean[] rendimentoTributavel;
-	private float[] valorRendimento;
-	private int numRendimentos;
-	private float totalRendimentos;
-	
-	private String[] nomesDependentes;
-	private String[] parentescosDependentes;
-	private int numDependentes;
-	
-	private int numContribuicaoPrevidenciaria;
-	private float totalContribuicaoPrevidenciaria;
-	
-	private float totalPensaoAlimenticia;
-	
-	private String[] nomesDeducoes;
-	private float[] valoresDeducoes;
+    public static final boolean TRIBUTAVEL = true;
+    public static final boolean NAOTRIBUTAVEL = false;
 
-	public IRPF() {
-		nomeRendimento = new String[0];
-		rendimentoTributavel = new boolean[0];
-		valorRendimento = new float[0];
-		
-		nomesDependentes = new String[0];
-		parentescosDependentes = new String[0];
-		numDependentes = 0;
-		
-		numContribuicaoPrevidenciaria = 0; 
-		totalContribuicaoPrevidenciaria = 0f;
-		
-		totalPensaoAlimenticia = 0f;
-		
-		nomesDeducoes = new String[0];
-		valoresDeducoes = new float[0];
-	}
-	
-	/**
-	 * Cadastra um rendimento na base do contribuinte, informando o nome do 
-	 * rendimento, seu valor e se ele é tributável ou não. 
-	 * @param nome nome do rendimento a ser cadastrado
-	 * @param tributavel true caso seja tributável, false caso contrário
-	 * @param valor valor do rendimento a ser cadastrado
-	 */
-	public void criarRendimento(String nome, boolean tributavel, float valor) {
-		//Adicionar o nome do novo rendimento
-		String[] temp = new String[nomeRendimento.length + 1];
-		for (int i=0; i<nomeRendimento.length; i++)
-			temp[i] = nomeRendimento[i];
-		temp[nomeRendimento.length] = nome;
-		nomeRendimento = temp;
+    private List<Rendimento> rendimentos;
+    private List<Dependente> dependentes;
+    private List<Deducao> deducoes;
+    private int numContribuicoesPrevidenciarias;
+    private float totalContribuicoesPrevidenciarias;
+    private float totalPensaoAlimenticia;
 
-		//adicionar tributavel ou nao no vetor 
-		boolean[] temp2 = new boolean[rendimentoTributavel.length + 1];
-		for (int i=0; i<rendimentoTributavel.length; i++) 
-			temp2[i] = rendimentoTributavel[i];
-		temp2[rendimentoTributavel.length] = tributavel;
-		rendimentoTributavel = temp2;
-		
-		//adicionar valor rendimento ao vetor
-		float[] temp3 = new float[valorRendimento.length + 1];
-		for (int i=0; i<valorRendimento.length; i++) {
-			temp3[i] = valorRendimento[i];
-		}
-		temp3[valorRendimento.length] = valor; 
-		valorRendimento = temp3;
-		
-		this.numRendimentos += 1;
-		this.totalRendimentos += valor;
-		
-	}
-
-	/**
-	 * Retorna o número de rendimentos já cadastrados para o contribuinte
-	 * @return numero de rendimentos
-	 */
-	public int getNumRendimentos() {
-		return numRendimentos;
-	}
-
-	/**
-	 * Retorna o valor total de rendimentos cadastrados para o contribuinte
-	 * @return valor total dos rendimentos
-	 */
-	public float getTotalRendimentos() {
-		return totalRendimentos;
-	}
-
-	/**
-	 * Retorna o valor total de rendimentos tributáveis do contribuinte
-	 * @return valor total dos rendimentos tributáveis
-	 */
-	public float getTotalRendimentosTributaveis() {
-		float totalRendimentosTributaveis = 0;
-		for (int i=0; i<rendimentoTributavel.length; i++) {
-			if (rendimentoTributavel[i]) {
-				totalRendimentosTributaveis += valorRendimento[i];
-			}
-		}
-		return totalRendimentosTributaveis;
-	}
-
-	/**
-	 * Método para realizar o cadastro de um dependente, informando seu grau 
-	 * de parentesco
-	 * @param nome Nome do dependente
-	 * @param parentesco Grau de parentesco
-	 */
-	public void cadastrarDependente(String nome, String parentesco) {
-		// adicionar dependente 
-		String[] temp = new String[nomesDependentes.length + 1];
-		for (int i=0; i<nomesDependentes.length; i++) {
-			temp[i] = nomesDependentes[i];
-		}
-		temp[nomesDependentes.length] = nome;
-		nomesDependentes = temp;
-		
-		String[] temp2 = new String[parentescosDependentes.length + 1];
-		for (int i=0; i<parentescosDependentes.length; i++) {
-			temp2[i] = parentescosDependentes[i];
-		}
-		temp2[parentescosDependentes.length] = parentesco;
-		parentescosDependentes = temp2;
-		
-		numDependentes++;
-	}
-
-	/**
-	 * Método que retorna o numero de dependentes do contribuinte
-	 * @return numero de dependentes
-	 */
-	public int getNumDependentes() {
-		return numDependentes;
-	}
-	
-	/**
-	 * Return o valor do total de deduções para o contribuinte
-	 * @return valor total de deducoes
-	 */
-	public float getDeducao() {
-		float total = 0; 
-		for (String d: nomesDependentes) {
-			total += 189.59f;
-		}
-		total += totalContribuicaoPrevidenciaria;
-		
-		return total;
-	}
-
-	/**
-	 * Cadastra um valor de contribuição previdenciária oficial
-	 * @param contribuicao valor da contribuição previdenciária oficial
-	 */
-	public void cadastrarContribuicaoPrevidenciaria(float contribuicao) {
-		numContribuicaoPrevidenciaria++;
-		totalContribuicaoPrevidenciaria += contribuicao;
-	}
-
-	/**
-	 * Retorna o numero total de contribuições realizadas como contribuicao 
-	 * previdenciaria oficial
-	 * @return numero de contribuições realizadas
-	 */
-	public int getNumContribuicoesPrevidenciarias() {
-		return numContribuicaoPrevidenciaria;
-	}
-
-	/**
-	 * Retorna o valor total de contribuições oficiais realizadas
-	 * @return valor total de contribuições oficiais
-	 */
-	public float getTotalContribuicoesPrevidenciarias() {
-		return totalContribuicaoPrevidenciaria;
-	}
-
-	/**
-	 * Realiza busca do dependente no cadastro do contribuinte
-	 * @param nome nome do dependente que está sendo pesquisado
-	 * @return nome do dependente ou null, caso nao conste na lista de dependentes
-	 */
-	public String getDependente(String nome) {
-		for (String d : nomesDependentes) {
-			if (d.contains(nome))
-				return d;
-		}
-		return null;
-	}
-
-	/**
-	 * Método que retorna o grau de parentesco para um dado dependente, caso ele
-	 * conste na lista de dependentes
-	 * @param dependente nome do dependente
-	 * @return grau de parentesco, nulo caso nao exista o dependente
-	 */
-	public String getParentesco(String dependente) {
-		for (int i = 0; i<nomesDependentes.length; i++) {
-			if (nomesDependentes[i].equalsIgnoreCase(dependente))
-				return parentescosDependentes[i];
-		}
-		return null;
-	}
-
-	/**
-	 * Realiza o cadastro de uma pensao alimenticia para um dos dependentes do 
-	 * contribuinte, caso ele seja um filho ou alimentando. 
-	 * @param dependente nome do dependente 
-	 * @param valor valor da pensao alimenticia
-	 */
-	public void cadastrarPensaoAlimenticia(String dependente, float valor) {
-		String parentesco = getParentesco(dependente);
-		if (parentesco != null && (parentesco.toLowerCase().contains("filh") || 
-        	parentesco.toLowerCase().contains("alimentand"))) {
-        	totalPensaoAlimenticia += valor;
-    	}
-	}
-
-	/**
-	 * Retorna o valor total pago em pensões alimentícias pelo contribuinte.
-	 * @return valor total de pensoes alimenticias
-	 */
-	public float getTotalPensaoAlimenticia() {
-		return totalPensaoAlimenticia;
-	}
-
-	
-  /**
-   * Metodo para cadastrar deduções integrais para o contribuinte. Para cada
-   * dedução é informado seu nome e valor. 
-   * @param nome nome da deducao 
-   * @param valorDeducao valor da deducao
-   */
-  public void cadastrarDeducaoIntegral(String nome, float valorDeducao) {
-      nomesDeducoes = adicionarNomeDeducao(nomesDeducoes, nome);
-      valoresDeducoes = adicionarValorDeducao(valoresDeducoes, valorDeducao);
-  }
-
-  /**
-   * Adiciona um nome de dedução ao array de nomes existentes.
-   * @param nomesDeducoes array atual de nomes de deduções
-   * @param nome novo nome de dedução a ser adicionado
-   * @return novo array com o nome adicionado
-   */
-  private String[] adicionarNomeDeducao(String[] nomesDeducoes, String nome) {
-      String[] temp = new String[nomesDeducoes.length + 1];
-      for (int i = 0; i < nomesDeducoes.length; i++) {
-          temp[i] = nomesDeducoes[i];
-      }
-      temp[nomesDeducoes.length] = nome;
-      return temp;
-  }
-
-  /**
-   * Adiciona um valor de dedução ao array de valores existentes.
-   * @param valoresDeducoes array atual de valores de deduções
-   * @param valorDeducao novo valor de dedução a ser adicionado
-   * @return novo array com o valor adicionado
-   */
-  private float[] adicionarValorDeducao(float[] valoresDeducoes, float valorDeducao) {
-      float[] temp = new float[valoresDeducoes.length + 1];
-      for (int i = 0; i < valoresDeducoes.length; i++) {
-          temp[i] = valoresDeducoes[i];
-      }
-      temp[valoresDeducoes.length] = valorDeducao;
-      return temp;
-  }
-	
-	/**
-	 * Método para pesquisar uma deducao pelo seu nome. 
-	 * @param substring do nome da deducao a ser pesquisada
-	 * @return nome da deducao, ou null caso na esteja cadastrada
-	 */
-	public String getOutrasDeducoes(String nome) {
-		for (String d : nomesDeducoes) {
-			if (d.toLowerCase().contains(nome.toLowerCase()))
-				return d;
-		}
-		return null;
-	}
-
-	/**
-	 * Obtem o valor da deducao à partir de seu nome 
-	 * @param nome nome da deducao para a qual se busca seu valor
-	 * @return valor da deducao
-	 */
-	public float getDeducao(String nome) {
-		for (int i=0; i<nomesDeducoes.length; i++) {
-			if (nomesDeducoes[i].toLowerCase().contains(nome.toLowerCase()))
-				return valoresDeducoes[i];
-		}
-		return 0;
-	}
-
-	/**
-	 * Obtem o valor total de todas as deduções que nao sao do tipo
-	 * contribuicoes previdenciarias ou por dependentes
-	 * @return valor total das outras deducoes
-	 */
-	public float getTotalOutrasDeducoes() {
-		float soma = 0;
-		for (float f : valoresDeducoes) {
-			soma += f;
-		}
-		return soma;
-	}
-	
-	public float calcularBaseCalculo() {
-        float rendimentosTributaveis = getTotalRendimentosTributaveis();
-        float deducoes = getDeducao() + getTotalOutrasDeducoes() + getTotalPensaoAlimenticia();
-        return Math.max(rendimentosTributaveis - deducoes, 0); // A base de cálculo não pode ser negativa.
+    public IRPF() {
+        this.rendimentos = new ArrayList<>();
+        this.dependentes = new ArrayList<>();
+        this.deducoes = new ArrayList<>();
+        this.numContribuicoesPrevidenciarias = 0;
+        this.totalContribuicoesPrevidenciarias = 0f;
+        this.totalPensaoAlimenticia = 0f;
     }
 
-	 /**
-	 * Calcula o imposto de renda com base nas faixas de tributação do IRPF.
-	 * Este método é eficiente e utiliza um array para definir as faixas e alíquotas.
-	 */
+    // Métodos relacionados a deduções
+    public void cadastrarDeducaoIntegral(String nome, float valor) {
+        deducoes.add(new Deducao(nome, valor));
+    }
+
+    public float getDeducao(String nome) {
+        return deducoes.stream()
+                .filter(d -> d.getNome().equalsIgnoreCase(nome))
+                .map(Deducao::getValor)
+                .findFirst()
+                .orElse(0f);
+    }
+
+    public String getOutrasDeducoes(String nome) {
+        return deducoes.stream()
+                .filter(d -> d.getNome().equalsIgnoreCase(nome))
+                .map(Deducao::getNome)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public float getDeducao() {
+        float totalDeducoes = deducoes.stream().map(Deducao::getValor).reduce(0f, Float::sum);
+        totalDeducoes += totalContribuicoesPrevidenciarias;
+        totalDeducoes += dependentes.size() * 189.59f;
+        totalDeducoes += totalPensaoAlimenticia;
+        return totalDeducoes;
+    }
+
+    public float getTotalOutrasDeducoes() {
+        // Soma todas as deduções cadastradas na lista "deducoes"
+        return deducoes.stream().map(Deducao::getValor).reduce(0f, Float::sum);
+    }
+
+    // Métodos relacionados a contribuições previdenciárias
+    public void cadastrarContribuicaoPrevidenciaria(float contribuicao) {
+        numContribuicoesPrevidenciarias++;
+        totalContribuicoesPrevidenciarias += contribuicao;
+    }
+
+    public int getNumContribuicoesPrevidenciarias() {
+        return numContribuicoesPrevidenciarias;
+    }
+
+    public float getTotalContribuicoesPrevidenciarias() {
+        return totalContribuicoesPrevidenciarias;
+    }
+
+    // Métodos relacionados a rendimentos
+    public void criarRendimento(String nome, boolean tributavel, float valor) {
+        rendimentos.add(new Rendimento(nome, tributavel, valor));
+    }
+
+    public float getTotalRendimentos() {
+        return rendimentos.stream()
+                .map(Rendimento::getValor)
+                .reduce(0f, Float::sum);
+    }
+
+    public float getTotalRendimentosTributaveis() {
+        return rendimentos.stream()
+                .filter(Rendimento::isTributavel)
+                .map(Rendimento::getValor)
+                .reduce(0f, Float::sum);
+    }
+
+    public int getNumRendimentos() {
+        return rendimentos.size();
+    }
+
+    // Métodos relacionados a dependentes
+    public void cadastrarDependente(String nome, String parentesco) {
+        dependentes.add(new Dependente(nome, parentesco));
+    }
+
+    public int getNumDependentes() {
+        return dependentes.size();
+    }
+
+    public String getDependente(String nome) {
+        return dependentes.stream()
+                .filter(d -> d.getNome().equalsIgnoreCase(nome))
+                .map(Dependente::getNome)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public String getParentesco(String dependente) {
+        return dependentes.stream()
+                .filter(d -> d.getNome().equalsIgnoreCase(dependente))
+                .map(Dependente::getParentesco)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void cadastrarPensaoAlimenticia(String dependente, float valor) {
+        dependentes.stream()
+                .filter(d -> d.getNome().equalsIgnoreCase(dependente) && d.isElegivelPensao())
+                .findFirst()
+                .ifPresent(d -> totalPensaoAlimenticia += valor);
+    }
+
+    public float getTotalPensaoAlimenticia() {
+        return totalPensaoAlimenticia;
+    }
+
+    // Métodos relacionados ao cálculo de imposto
+    public float calcularBaseCalculo() {
+        float rendimentosTributaveis = getTotalRendimentosTributaveis();
+        float deducoesTotais = getDeducao();
+        return Math.max(rendimentosTributaveis - deducoesTotais, 0);
+    }
+
     public static float calcularImposto(float baseCalculo) {
-        // Definição das faixas de tributação e alíquotas
         final float[] limites = {2259.20f, 2826.65f, 3751.05f, 4664.68f};
         final float[] aliquotas = {0.075f, 0.15f, 0.225f, 0.275f};
 
         float imposto = 0;
         float valorRestante = baseCalculo;
 
-        // Cálculo do imposto em cada faixa
         for (int i = limites.length - 1; i >= 0; i--) {
             if (valorRestante > limites[i]) {
                 float valorNaFaixa = valorRestante - limites[i];
@@ -336,18 +154,13 @@ public class IRPF {
         }
 
         return imposto;
-	}
-    /**
-     * Calcula a alíquota efetiva do imposto de renda.
-     * A alíquota efetiva é dada pelo quociente entre o imposto devido e os rendimentos tributáveis.
-     * @return alíquota efetiva como percentual.
-     */
+    }
+
     public float calcularAliquotaEfetiva() {
-		float baseCalculo = calcularBaseCalculo();
-		float imposto = calcularImposto(baseCalculo);
+        float baseCalculo = calcularBaseCalculo();
+        float imposto = calcularImposto(baseCalculo);
         float rendimentosTributaveis = getTotalRendimentosTributaveis();
         if (rendimentosTributaveis == 0) return 0;
         return (imposto / rendimentosTributaveis) * 100;
     }
-
 }
