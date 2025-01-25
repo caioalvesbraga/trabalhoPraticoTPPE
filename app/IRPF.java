@@ -138,11 +138,12 @@ public class IRPF {
         return Math.max(rendimentosTributaveis - deducoesTotais, 0);
     }
 
-    public static float calcularImposto(float baseCalculo) {
+    public float calcularImposto() {
         final float[] limites = {2259.20f, 2826.65f, 3751.05f, 4664.68f};
         final float[] aliquotas = {0.075f, 0.15f, 0.225f, 0.275f};
 
         float imposto = 0;
+        float baseCalculo = calcularBaseCalculo();
         float valorRestante = baseCalculo;
 
         for (int i = limites.length - 1; i >= 0; i--) {
@@ -158,7 +159,7 @@ public class IRPF {
 
     public float calcularAliquotaEfetiva() {
         float baseCalculo = calcularBaseCalculo();
-        float imposto = calcularImposto(baseCalculo);
+        float imposto = calcularImposto();
         float rendimentosTributaveis = getTotalRendimentosTributaveis();
         if (rendimentosTributaveis == 0) return 0;
         return (imposto / rendimentosTributaveis) * 100;
